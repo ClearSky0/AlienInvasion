@@ -23,6 +23,9 @@ class AlienInvasion:
         
         pygame.display.set_caption("Alien Invasion")
 
+        self.font = pygame.font.Font('freesansbold.ttf', 32)
+        self.event_key = ""
+
         self.ship = Ship(self)
 
     def run_game(self):
@@ -51,8 +54,13 @@ class AlienInvasion:
             self.ship.moving_right = True
         elif event.key == pygame.K_LEFT:
             self.ship.moving_left = True
+        elif event.key == pygame.K_UP:
+            self.ship.moving_up = True
+        elif event.key == pygame.K_DOWN:
+            self.ship.moving_down = True
         elif event.key == pygame.K_q:
             sys.exit()
+        self.event_key = event.key
 
     def _check_keyup_events(self,event):
         """Respond to key releases"""
@@ -60,12 +68,26 @@ class AlienInvasion:
             self.ship.moving_right = False
         elif event.key == pygame.K_LEFT:
             self.ship.moving_left = False
+        elif event.key == pygame.K_UP:
+            self.ship.moving_up = False
+        elif event.key == pygame.K_DOWN:
+            self.ship.moving_down = False
+        self.event_key = event.key.name()
+        
 
     def _update_screen(self):
         """Update images on the screen, and flip to the new screen"""
         # Helper Method
         self.screen.fill(self.settings.bg_color)
         self.ship.blitme()
+        green = (0, 255, 0)
+        blue = (0, 0, 128)
+        X = 400
+        Y = 400
+        text = self.font.render(self.event_key, True, green, blue)
+        textRect = text.get_rect()
+        textRect.center = (X // 2, Y // 2)
+        self.screen.blit(text, textRect)
 
         # Make the most recently drawn screen visible.
         pygame.display.flip()

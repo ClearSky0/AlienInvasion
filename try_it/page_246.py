@@ -14,12 +14,12 @@ class AlienInvasion:
         self.settings = Settings()
 
         # Windowed
-        # self.screen = pygame.display.set_mode((self.settings.screen_width, self.settings.screen_height))
+        self.screen = pygame.display.set_mode((self.settings.screen_width, self.settings.screen_height))
 
         # Fullscreen
-        self.screen = pygame.display.set_mode((0, 0), pygame.FULLSCREEN)
-        self.settings.screen_width = self.screen.get_rect().width
-        self.settings.screen_height = self.screen.get_rect().height
+        # self.screen = pygame.display.set_mode((0, 0), pygame.FULLSCREEN)
+        # self.settings.screen_width = self.screen.get_rect().width
+        # self.settings.screen_height = self.screen.get_rect().height
         
         pygame.display.set_caption("Alien Invasion")
 
@@ -39,10 +39,12 @@ class AlienInvasion:
         """Respond to keyboard and mouse events"""
         # Helper Method
         for event in pygame.event.get():
+        
             if event.type == pygame.QUIT:
                 sys.exit()
 
             elif event.type == pygame.KEYDOWN:
+                print(event.key)
                 self._check_keydown_events(event)
 
             elif event.type == pygame.KEYUP:
@@ -60,7 +62,6 @@ class AlienInvasion:
             self.ship.moving_down = True
         elif event.key == pygame.K_q:
             sys.exit()
-        self.event_key = event.key
 
     def _check_keyup_events(self,event):
         """Respond to key releases"""
@@ -72,7 +73,6 @@ class AlienInvasion:
             self.ship.moving_up = False
         elif event.key == pygame.K_DOWN:
             self.ship.moving_down = False
-        self.event_key = event.key.name()
         
 
     def _update_screen(self):
@@ -80,14 +80,14 @@ class AlienInvasion:
         # Helper Method
         self.screen.fill(self.settings.bg_color)
         self.ship.blitme()
-        green = (0, 255, 0)
-        blue = (0, 0, 128)
-        X = 400
-        Y = 400
-        text = self.font.render(self.event_key, True, green, blue)
-        textRect = text.get_rect()
-        textRect.center = (X // 2, Y // 2)
-        self.screen.blit(text, textRect)
+        # green = (0, 255, 0)
+        # blue = (0, 0, 128)
+        # X = 400
+        # Y = 400
+        # text = self.font.render(self.event_key, True, green, blue)
+        # textRect = text.get_rect()
+        # textRect.center = (X // 2, Y // 2)
+        # self.screen.blit(text, textRect)
 
         # Make the most recently drawn screen visible.
         pygame.display.flip()

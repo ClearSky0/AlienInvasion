@@ -3,6 +3,8 @@ from pygame.sprite import Sprite
 import time
 from random import randint
 from rich import print
+from rich.traceback import install
+install(show_locals=True)
 
 class Image(Sprite):
     """A class to represent a Sprite"""
@@ -62,6 +64,7 @@ for row_number in range(number_images_y):
 images.draw(screen)
 
 pygame.display.flip()
+
 
 def update_images(self):
     for image in self:

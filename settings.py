@@ -1,3 +1,8 @@
+# Author    : Gary Godfrey
+# Date      : 5th Oct 2021
+# Desc      : The Settings module for the Alien Invasion project in
+#           : Python Crash Course.
+
 class Settings:
     """A class to store all settings for the Alien Invasion game."""
 

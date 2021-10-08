@@ -1,3 +1,8 @@
+# Author    : Gary Godfrey
+# Date      : 5th Oct 2021
+# Desc      : The Ship module for the Alien Invasion project in
+#           : Python Crash Course.
+
 import pygame
 
 class Ship():

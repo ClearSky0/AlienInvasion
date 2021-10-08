@@ -1,11 +1,21 @@
-import sys
+# Author    : Gary Godfrey
+# Date      : 5th Oct 2021
+# Desc      : The is the main program for the Alien Invasion project in
+#           : Python Crash Course.
+#
+# Mods      : 8th Oct - start work on shooting the aliens
 
-import pygame
+# Use the amazing traceback from the rich library to catch and show errors
+# much more clearly and easier to read.
+from rich.traceback import install
+install(show_locals=True)
 
-from settings import Settings
-from ship import Ship
-from bullet import Bullet
-from alien import Alien
+import  sys
+import  pygame
+from    settings   import Settings
+from    ship       import Ship
+from    bullet     import Bullet
+from    alien      import Alien
 
 class AlienInvasion:
     """Overall class to manage game assets and behavior."""

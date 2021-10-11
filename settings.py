@@ -14,6 +14,9 @@ class Settings:
         self.screen_height = 800
         self.bg_color = (230, 230, 230)
 
+        # File settings
+        self.filename = "ai_high_score.txt"
+
         # Ship settings
         self.ship_limit = 2
 
@@ -53,5 +56,4 @@ class Settings:
         self.bullet_speed *= self.speedup_scale
         self.alien_speed *= self.speedup_scale
         self.alien_points = int(self.alien_points * self.score_scale)
-        print("Ship", self.ship_speed, "Bullet", self.bullet_speed, "Alien", self.alien_speed, "Score", self.alien_points)
-        
+        # print("Ship", self.ship_speed, "Bullet", self.bullet_speed, "Alien", self.alien_speed, "Score", self.alien_points)

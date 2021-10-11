@@ -81,6 +81,7 @@ class AlienInvasion:
         # Helper Method
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
+                self._save_high_score()
                 sys.exit()
             elif event.type == pygame.KEYDOWN:
                 self._check_keydown_events(event)
@@ -89,6 +90,13 @@ class AlienInvasion:
             elif event.type == pygame.MOUSEBUTTONDOWN:
                 mouse_pos = pygame.mouse.get_pos()
                 self._check_play_button(mouse_pos)
+    
+    def _save_high_score(self):
+        """Save the high score on exit"""
+         # Save high score - in an unclean way
+
+        with open(self.settings.filename, 'w') as file_object:
+            file_object.write(str(self.stats.high_score))
 
     def _check_play_button(self, mouse_pos):
         """Start a new game when the player clicks on Play"""
@@ -125,6 +133,7 @@ class AlienInvasion:
         elif event.key == pygame.K_LEFT:
             self.ship.moving_left = True
         elif event.key == pygame.K_q or event.key == pygame.K_ESCAPE:
+            self._save_high_score()
             sys.exit()
         elif event.key == pygame.K_SPACE:
             self._fire_bullet()

@@ -79,7 +79,7 @@ class AlienInvasion:
         for bullet in self.bullets.copy():
             if bullet.rect.left >= self.settings.screen_width:
                 self.bullets.remove(bullet)
-                print(len(self.bullets))
+                # print(len(self.bullets))
         
     def _update_screen(self):
         """Update images on the screen, and flip to the new screen"""

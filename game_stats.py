@@ -2,9 +2,11 @@
 # Date      : 8th Oct 2021
 # Desc      : Game Stats module for the Alien Invasion project
 #           : in the Python Crash Course book.
+#
+# Mods      : 8th Oct - Start in inactive state
 
 class GameStats:
-    """Track statustucs for Alien Invasion"""
+    """Track statistics for Alien Invasion"""
 
     def __init__(self, ai_game):
         """Initialise statistics"""
@@ -13,8 +15,13 @@ class GameStats:
         self.reset_stats()
 
         # Start Alien Invasion in an active state
-        self.game_active = True
+        self.game_active = False
+
+        # High score should never be reset
+        self.high_score = 0
 
     def reset_stats(self):
-        """Initisalise statistcs that can change during the game"""
+        """Initialise statistics that can change during the game"""
         self.ships_left = self.settings.ship_limit
+        self.score = 0
+        self.level = 0 

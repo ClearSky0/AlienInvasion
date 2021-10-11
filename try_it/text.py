@@ -7,7 +7,7 @@ import pygame
 pygame.init()
 
 # define the RGB value for white,
-# green, blue colour .
+# green, blue color .
 white = (255, 255, 255)
 green = (0, 255, 0)
 blue = (0, 0, 128)

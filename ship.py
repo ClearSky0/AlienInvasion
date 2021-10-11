@@ -2,14 +2,18 @@
 # Date      : 5th Oct 2021
 # Desc      : The Ship module for the Alien Invasion project in
 #           : Python Crash Course.
+#
+# Mods      : 11th Oct Add sprite group so that ships can be used to represent lives
 
 import pygame
+from pygame.sprite import Sprite
 
-class Ship():
+class Ship(Sprite):
     """A class to manage the ship"""
 
     def __init__(self, ai_game):
         """Initialise the ship and set its starting position"""
+        super().__init__()
 
         self.screen = ai_game.screen
         self.screen_rect = ai_game.screen.get_rect()

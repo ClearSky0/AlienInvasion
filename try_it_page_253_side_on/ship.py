@@ -1,11 +1,20 @@
-import pygame
+# Author    : Gary Godfrey
+# Date      : 5th Oct 2021
+# Desc      : Ship module
+#           : Python Crash Course.
+#
+# Mods      : 11th Oct - added code to help display number of ships (lives)
 
-class Ship():
+import pygame
+from pygame.sprite import Sprite
+
+class Ship(Sprite):
     """A class to manage the ship"""
 
     def __init__(self, ai_game):
         """Initialise the ship and set its starting position"""
-
+        super().__init()
+        
         self.screen = ai_game.screen
         self.screen_rect = ai_game.screen.get_rect()
         self.settings = ai_game.settings

@@ -11,7 +11,6 @@
 
 # Use the amazing traceback from the rich library to catch and show errors
 # much more clearly and easier to read.
-from pygame.constants import K_RETURN, K_p
 from rich.traceback import install
 install(show_locals=True)
 
@@ -137,7 +136,7 @@ class AlienInvasion:
             sys.exit()
         elif event.key == pygame.K_SPACE:
             self._fire_bullet()
-        elif event.key == K_RETURN or event.key == K_p:
+        elif event.key == pygame.K_RETURN or event.key == pygame.K_p:
             # I thouhgt I was being proactive with this but it's part of exercise 14.1
             self._start_game()
 

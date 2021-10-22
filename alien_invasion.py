@@ -7,7 +7,8 @@
 #           : 8th Oct - Game Statistics
 #           : 11th Oct - Game starting, stopping & scoring
 #           : 22nd Oct - Getting creative and adding sounds additional to book
-#                Added level to saved high score, and moved save to game_stats.py
+#               Added level to saved high score, and moved save to game_stats.py
+#               Moved level on screen to match high-score format
 
 # Standard library imports
 
@@ -44,10 +45,10 @@ class AlienInvasion:
         # Initialise Sounds
         pygame.mixer.init()
 
-        buffer1 = np.sin(2 * np.pi * np.arange(44100) * 480 / 44100).astype(np.float32)
-        self.sound1 = pygame.mixer.Sound(buffer1)
-        buffer2 = np.sin(2 * np.pi * np.arange(44100) * 440 / 44100).astype(np.float32)
-        self.sound2 = pygame.mixer.Sound(buffer2)
+        buffer1 = np.sin(2 * np.pi * np.arange(44100) * 600 / 44100).astype(np.float32)
+        self.sound_bullet = pygame.mixer.Sound(buffer1)
+        buffer2 = np.sin(2 * np.pi * np.arange(44100) * 480 / 44100).astype(np.float32)
+        self.sound_alien = pygame.mixer.Sound(buffer2)
 
         self.settings = Settings()
 
@@ -138,7 +139,7 @@ class AlienInvasion:
             self.stats.reset_stats()
             self.stats.game_active = True
             self.sb.prep_score()
-            self.sb.prep_level()
+            # self.sb.prep_level()
             self.sb.prep_ships()
 
             # Get rid of any remaining aliens and bullets
@@ -157,7 +158,7 @@ class AlienInvasion:
         if len(self.bullets) < self.settings.bullets_allowed and self.stats.game_active:
             new_bullet = Bullet(self)
             self.bullets.add(new_bullet)
-            self.sound1.play(0,50)
+            self.sound_bullet.play(0,50)
 
     def _update_bullets(self):
         """Update position of bullets and get rid of old bullets"""
@@ -196,7 +197,7 @@ class AlienInvasion:
 
             # Inscrease level
             self.stats.level += 1
-            self.sb.prep_level()
+            # self.sb.prep_level()
 
     def _update_aliens(self):
         """Check if the fleet is at the an edge,
@@ -246,7 +247,7 @@ class AlienInvasion:
         for alien in self.aliens.sprites():
             if alien.check_edges():
                 self._change_fleet_direction()
-                self.sound2.play(0,50)
+                self.sound_alien.play(0,50)
                 break
 
     def _check_aliens_bottom(self):
@@ -310,7 +311,6 @@ class AlienInvasion:
             self.stats.game_active = False
             pygame.mouse.set_visible(True)
 
-        
 if __name__ == '__main__':
     # Make a game instance and run the game.
     ai = AlienInvasion()

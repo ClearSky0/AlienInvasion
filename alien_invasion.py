@@ -6,6 +6,8 @@
 # Mods      : 8th Oct - Shooting & destroying the aliens
 #           : 8th Oct - Game Statistics
 #           : 11th Oct - Game starting, stopping & scoring
+#           : 22nd Oct - Getting creative and adding sounds additional to book
+#                Added level to saved high score, and moved save to game_stats.py
 
 # Standard library imports
 
@@ -18,6 +20,9 @@ import  sys
 import  pygame.mouse
 import  pygame.sprite      # Added to get intellisense to work for the sprite methods
 from    time        import sleep
+import pygame.mixer
+import pygame.event
+import numpy as np
 
 # Custom imports
 
@@ -35,6 +40,15 @@ class AlienInvasion:
     def __init__(self):
         """Initialise the game and create game resources."""
         pygame.init()
+
+        # Initialise Sounds
+        pygame.mixer.init()
+
+        buffer1 = np.sin(2 * np.pi * np.arange(44100) * 480 / 44100).astype(np.float32)
+        self.sound1 = pygame.mixer.Sound(buffer1)
+        buffer2 = np.sin(2 * np.pi * np.arange(44100) * 440 / 44100).astype(np.float32)
+        self.sound2 = pygame.mixer.Sound(buffer2)
+
         self.settings = Settings()
 
         # Windowed
@@ -72,7 +86,6 @@ class AlienInvasion:
                 self._update_bullets()
 
             self._update_aliens()
-
             self._update_screen()
 
     def _check_events(self):
@@ -80,7 +93,7 @@ class AlienInvasion:
         # Helper Method
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
-                self._save_high_score()
+                self.stats.save_high_score()
                 sys.exit()
             elif event.type == pygame.KEYDOWN:
                 self._check_keydown_events(event)
@@ -89,13 +102,27 @@ class AlienInvasion:
             elif event.type == pygame.MOUSEBUTTONDOWN:
                 mouse_pos = pygame.mouse.get_pos()
                 self._check_play_button(mouse_pos)
-    
-    def _save_high_score(self):
-        """Save the high score on exit"""
-         # Save high score - in an unclean way
 
-        with open(self.settings.filename, 'w') as file_object:
-            file_object.write(str(self.stats.high_score))
+    def _check_keydown_events(self, event):
+        """Respond to key presses"""
+        if event.key == pygame.K_RIGHT:
+            self.ship.moving_right = True
+        elif event.key == pygame.K_LEFT:
+            self.ship.moving_left = True
+        elif event.key == pygame.K_q or event.key == pygame.K_ESCAPE:
+            self.stats.save_high_score()
+            sys.exit()
+        elif event.key == pygame.K_SPACE:
+            self._fire_bullet()
+        elif event.key == pygame.K_RETURN or event.key == pygame.K_p:
+            self._start_game()
+
+    def _check_keyup_events(self,event):
+        """Respond to key releases"""
+        if event.key == pygame.K_RIGHT:
+            self.ship.moving_right = False
+        elif event.key == pygame.K_LEFT:
+            self.ship.moving_left = False
 
     def _check_play_button(self, mouse_pos):
         """Start a new game when the player clicks on Play"""
@@ -125,34 +152,12 @@ class AlienInvasion:
             # Hide the mouse pointer
             pygame.mouse.set_visible(False)
 
-    def _check_keydown_events(self, event):
-        """Respond to key presses"""
-        if event.key == pygame.K_RIGHT:
-            self.ship.moving_right = True
-        elif event.key == pygame.K_LEFT:
-            self.ship.moving_left = True
-        elif event.key == pygame.K_q or event.key == pygame.K_ESCAPE:
-            self._save_high_score()
-            sys.exit()
-        elif event.key == pygame.K_SPACE:
-            self._fire_bullet()
-        elif event.key == pygame.K_RETURN or event.key == pygame.K_p:
-            # I thouhgt I was being proactive with this but it's part of exercise 14.1
-            self._start_game()
-
-
-    def _check_keyup_events(self,event):
-        """Respond to key releases"""
-        if event.key == pygame.K_RIGHT:
-            self.ship.moving_right = False
-        elif event.key == pygame.K_LEFT:
-            self.ship.moving_left = False
-
     def _fire_bullet(self):
         """Create a new bullet and add it to the bullets group"""
-        if len(self.bullets) < self.settings.bullets_allowed:
+        if len(self.bullets) < self.settings.bullets_allowed and self.stats.game_active:
             new_bullet = Bullet(self)
             self.bullets.add(new_bullet)
+            self.sound1.play(0,50)
 
     def _update_bullets(self):
         """Update position of bullets and get rid of old bullets"""
@@ -241,6 +246,7 @@ class AlienInvasion:
         for alien in self.aliens.sprites():
             if alien.check_edges():
                 self._change_fleet_direction()
+                self.sound2.play(0,50)
                 break
 
     def _check_aliens_bottom(self):

@@ -5,7 +5,7 @@
 #
 # Mods      : 8th Oct - Start in inactive state
 #           : 22nd Oct - Added level to high score and file
-#               Moved save scores here to encapsulate file handing this module could be reused
+#               Moved save scores here to encapsulate file handing. This module could be reused
 #           
 
 class GameStats:

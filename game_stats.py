@@ -53,3 +53,4 @@ class GameStats:
         self.level = 1
         self.bullets_fired = 0
         self.bullets_on_target = 0
+        

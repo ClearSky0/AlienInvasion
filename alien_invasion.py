@@ -9,6 +9,9 @@
 #           : 22nd Oct - Getting creative and adding sounds additional to book
 #               Added level to saved high score, and moved save to game_stats.py
 #               Moved level on screen to match high-score format
+#           : 25th Oct - Refactor _check_bullet_alien_colilsions to _start_new_level
+#               self.sb.prep_ships() was called here instead of init in scoreboard
+#               simplified image prep with new refactored scoreboard.prep_images
 
 # Standard library imports
 
@@ -66,7 +69,6 @@ class AlienInvasion:
         #   and create a scoreboard
         self.stats = GameStats(self)
         self.sb = Scoreboard(self)
-        self.sb.prep_ships()
 
         self.ship = Ship(self)
         self.bullets = pygame.sprite.Group()
@@ -138,9 +140,7 @@ class AlienInvasion:
             self.settings.initialise_dynamic_settings()
             self.stats.reset_stats()
             self.stats.game_active = True
-            self.sb.prep_score()
-            # self.sb.prep_level()
-            self.sb.prep_ships()
+            self.sb.prep_images()
 
             # Get rid of any remaining aliens and bullets
             self.aliens.empty()
@@ -159,6 +159,8 @@ class AlienInvasion:
             new_bullet = Bullet(self)
             self.bullets.add(new_bullet)
             self.sound_bullet.play(0,50)
+            self.stats.bullets_fired += 1
+            self.sb.prep_accuracy()
 
     def _update_bullets(self):
         """Update position of bullets and get rid of old bullets"""
@@ -184,20 +186,24 @@ class AlienInvasion:
             # print(collisions)
             for aliens in collisions.values():
                 # Make sure that we count all the hit aliens
-                self.stats.score += self.settings.alien_points * len (aliens)
+                self.stats.score += self.settings.alien_points * len(aliens)
+                self.stats.bullets_on_target += len(aliens)
             self.sb.prep_score()
-            self.sb.check_high_score()
+            self.sb.prep_accuracy()
+            self.sb.check_high_score() # Which also preps high score if changed
 
         if not self.aliens: # the aliens group is empty
-            # Destroy existing bullets and create a new fleet
-            self.bullets.empty()
-            self._create_fleet()
-            # Increase the game speed
-            self.settings.increase_speed()
+            self._start_new_level()
 
-            # Inscrease level
-            self.stats.level += 1
-            # self.sb.prep_level()
+    def _start_new_level(self):
+        # Destroy existing bullets and create a new fleet
+        self.bullets.empty()
+        self._create_fleet()
+        # Increase the game speed
+        self.settings.increase_speed()
+
+        # Inscrease level (which is now an attribute of score so is rendered with that)
+        self.stats.level += 1
 
     def _update_aliens(self):
         """Check if the fleet is at the an edge,

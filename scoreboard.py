@@ -3,6 +3,8 @@
 # Desc      : The Settings module for the Alien Invasion project in
 #           : Python Crash Course.
 # Mods      : 22nd Oct - Didn't like the layout of score and level, used : instead
+#           : 25th Oct - Display accuracy percentage and init ships here
+#               Also refactor the image prep calls in init into a single image init
 
 import pygame.font
 from pygame.sprite import Group
@@ -23,9 +25,14 @@ class Scoreboard:
         self.text_color = (30,30,30)
         self.font = pygame.font.SysFont(None, 48)
 
-        # Prepare the initial score image
+        self.prep_images()
+
+    def prep_images(self):
+        # Prepare the initial score images
         self.prep_score()
         self.prep_high_score()
+        self.prep_ships()
+        self.prep_accuracy()
 
     def prep_score(self):
         """Turn the score into a rendered image"""
@@ -51,16 +58,20 @@ class Scoreboard:
         self.high_score_rect.centerx = self.screen_rect.centerx
         self.high_score_rect.top = self.score_rect.top
 
-    # def prep_level(self):
-    #     """Turn the level into a rendered image"""
-    #     level_str = str(self.stats.level)
-    #     self.level_image = self.font.render(level_str, True,
-    #         self.text_color, self.settings.bg_color)
+    def prep_accuracy(self):
+        """Turn the accuracy into a rendered image"""
+        # accuracy_str = str(self.stats.bullets_fired) + " : " + str(self.stats.bullets_on_target)
+        if self.stats.bullets_fired != 0:
+            accuracy_str = str(round((self.stats.bullets_on_target / self.stats.bullets_fired) * 100, 2)) + "%"
+        else:
+            accuracy_str = "100%"
+        self.accuracy_image = self.font.render(accuracy_str, True,
+            self.text_color, self.settings.bg_color)
 
-    #     # Display the level below the score
-    #     self.level_rect = self.level_image.get_rect()
-    #     self.level_rect.right = self.score_rect.right
-    #     self.level_rect.top = self.score_rect.bottom + 10
+        # Display the accuracy at the top right of the screen
+        self.accuracy_rect = self.accuracy_image.get_rect()
+        self.accuracy_rect.right = self.screen_rect.right - 200
+        self.accuracy_rect.top = 20
 
     def prep_ships(self):
         """Show how many lives are left"""
@@ -75,6 +86,7 @@ class Scoreboard:
         """Draw the scores, level and ships to the screen"""
         self.screen.blit(self.score_image, self.score_rect)
         self.screen.blit(self.high_score_image, self.high_score_rect)
+        self.screen.blit(self.accuracy_image, self.accuracy_rect)
         # self.screen.blit(self.level_image, self.level_rect)
         self.ships.draw(self.screen)
 

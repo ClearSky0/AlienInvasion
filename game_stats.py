@@ -6,6 +6,7 @@
 # Mods      : 8th Oct - Start in inactive state
 #           : 22nd Oct - Added level to high score and file
 #               Moved save scores here to encapsulate file handing. This module could be reused
+#           : 25th Oct - Added stats for accuracy
 #           
 
 class GameStats:
@@ -50,3 +51,5 @@ class GameStats:
         self.ships_left = self.settings.ship_limit
         self.score = 0
         self.level = 1
+        self.bullets_fired = 0
+        self.bullets_on_target = 0

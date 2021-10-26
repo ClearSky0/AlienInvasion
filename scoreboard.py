@@ -5,6 +5,7 @@
 # Mods      : 22nd Oct - Didn't like the layout of score and level, used : instead
 #           : 25th Oct - Display accuracy percentage and init ships here
 #               Also refactor the image prep calls in init into a single image init
+#               Repositioned accuracy after score over-wrote it
 
 import pygame.font
 from pygame.sprite import Group
@@ -70,7 +71,7 @@ class Scoreboard:
 
         # Display the accuracy at the top right of the screen
         self.accuracy_rect = self.accuracy_image.get_rect()
-        self.accuracy_rect.right = self.screen_rect.right - 200
+        self.accuracy_rect.right = self.screen_rect.right - 300
         self.accuracy_rect.top = 20
 
     def prep_ships(self):
